@@ -1,0 +1,21 @@
+[33m5a6b9c6[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Update health check path and add instance configuration
+[33m6482418[m Update deployment configuration for Render
+[33mcf4df0b[m Add render.yaml for deployment
+[33md448f45[m haha
+[33m5d439e8[m Fix: Update SqlGatewayServlet to use Render database
+[33mb956520[m Clear target cache
+[33ma54d1bd[m Force rebuild with correct hostname
+[33m21724cd[m Fix hostname typo: cvd14d -> cvdi4d
+[33m28fe468[m Clean up: Remove unused config files
+[33mbf39f91[m Fix: Update context.xml with Render database and remove external config
+[33mc588c2c[m ;;
+[33m5eb119d[m Force rebuild
+[33m5dbe4dc[m ,,
+[33md359368[m Fix database connection: update context.xml to use Render PostgreSQL
+[33m5f640c5[m Rename Dockerfiles: Dockerfile.render -> Dockerfile for Render deployment
+[33m0c64cd0[m Fix Render deployment: add context-render.xml with database credentials
+[33m3a059d6[m last update
+[33m3792719[m sql-2
+[33m3d0a0ff[m update-sql
+[33mcc5aacd[m update
+[33m452d560[m first commit
