@@ -24,8 +24,7 @@ RUN rm -rf /usr/local/tomcat/webapps/*
 # Copy the WAR file from builder stage (ROOT.war deploys at root context)
 COPY --from=builder /app/target/ROOT.war /usr/local/tomcat/webapps/ROOT.war
 
-# Copy Render-specific context.xml for database configuration
-COPY context-render.xml /usr/local/tomcat/conf/Catalina/localhost/ROOT.xml
+# Context.xml is already embedded in WAR file with correct Render database config
 
 # Expose Tomcat port
 EXPOSE 8080
