@@ -23,6 +23,15 @@
         <url-pattern>/emailList</url-pattern>
     </servlet-mapping>
     
+    <servlet>
+        <servlet-name>UserServlet</servlet-name>
+        <servlet-class>murach.admin.UserServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserServlet</servlet-name>
+        <url-pattern>/userAdmin</url-pattern>
+    </servlet-mapping>
+    
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>

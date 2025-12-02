@@ -1,8 +1,19 @@
 package murach.business;
 
 import java.io.Serializable;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name = "\"user\"") // "user" is a reserved keyword in Postgres, so quoting it
 public class User implements Serializable {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long userId;
     
     private String firstName;
     private String lastName;
@@ -18,6 +29,14 @@ public class User implements Serializable {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+    }
+    
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
     
     public String getFirstName() {

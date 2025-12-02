@@ -1,154 +1,120 @@
 package murach.data;
 
-import java.sql.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.TypedQuery;
+import java.util.List;
+
 import murach.business.User;
 
 public class UserDB {
     
     public static int insert(User user) {
-        ConnectionPool pool = ConnectionPool.getInstance();
-        Connection connection = pool.getConnection();
-        PreparedStatement ps = null;
-        
-        if (connection == null) {
-            System.out.println("ERROR: Cannot get database connection!");
-            return 0;
-        }
-        
-        String query = "INSERT INTO \"user\" (email, firstname, lastname) " +
-                      "VALUES (?, ?, ?)";
+        EntityManager em = DBUtil.getEmFactory().createEntityManager();
+        EntityTransaction trans = em.getTransaction();
+        trans.begin();
         try {
-            ps = connection.prepareStatement(query);
-            ps.setString(1, user.getEmail());
-            ps.setString(2, user.getFirstName());
-            ps.setString(3, user.getLastName());
-            return ps.executeUpdate();
-        } catch (SQLException e) {
+            em.persist(user);
+            trans.commit();
+            return 1;
+        } catch (Exception e) {
             System.out.println(e);
+            trans.rollback();
             return 0;
         } finally {
-            DBUtil.closePreparedStatement(ps);
-            pool.freeConnection(connection);
+            em.close();
         }
     }
     
     public static int update(User user) {
-        ConnectionPool pool = ConnectionPool.getInstance();
-        Connection connection = pool.getConnection();
-        PreparedStatement ps = null;
-        
-        if (connection == null) {
-            System.out.println("ERROR: Cannot get database connection!");
-            return 0;
-        }
-        
-        String query = "UPDATE \"user\" SET " +
-                      "firstname = ?, " +
-                      "lastname = ? " +
-                      "WHERE email = ?";
+        EntityManager em = DBUtil.getEmFactory().createEntityManager();
+        EntityTransaction trans = em.getTransaction();
+        trans.begin();
         try {
-            ps = connection.prepareStatement(query);
-            ps.setString(1, user.getFirstName());
-            ps.setString(2, user.getLastName());
-            ps.setString(3, user.getEmail());
+            TypedQuery<User> q = em.createQuery(
+                    "SELECT u FROM User u WHERE u.email = :email", User.class);
+            q.setParameter("email", user.getEmail());
+            User existingUser = q.getSingleResult();
             
-            return ps.executeUpdate();
-        } catch (SQLException e) {
+            existingUser.setFirstName(user.getFirstName());
+            existingUser.setLastName(user.getLastName());
+            
+            trans.commit();
+            return 1;
+        } catch (Exception e) {
             System.out.println(e);
+            trans.rollback();
             return 0;
         } finally {
-            DBUtil.closePreparedStatement(ps);
-            pool.freeConnection(connection);
+            em.close();
         }
     }
     
     public static int delete(User user) {
-        ConnectionPool pool = ConnectionPool.getInstance();
-        Connection connection = pool.getConnection();
-        PreparedStatement ps = null;
-        
-        if (connection == null) {
-            System.out.println("ERROR: Cannot get database connection!");
-            return 0;
-        }
-        
-        String query = "DELETE FROM \"user\" " +
-                      "WHERE email = ?";
+        EntityManager em = DBUtil.getEmFactory().createEntityManager();
+        EntityTransaction trans = em.getTransaction();
+        trans.begin();
         try {
-            ps = connection.prepareStatement(query);
-            ps.setString(1, user.getEmail());
+            TypedQuery<User> q = em.createQuery(
+                    "SELECT u FROM User u WHERE u.email = :email", User.class);
+            q.setParameter("email", user.getEmail());
+            User existingUser = q.getSingleResult();
             
-            return ps.executeUpdate();
-        } catch (SQLException e) {
+            em.remove(existingUser);
+            trans.commit();
+            return 1;
+        } catch (Exception e) {
             System.out.println(e);
+            trans.rollback();
             return 0;
         } finally {
-            DBUtil.closePreparedStatement(ps);
-            pool.freeConnection(connection);
+            em.close();
         }
     }
     
     public static boolean emailExists(String email) {
-        ConnectionPool pool = ConnectionPool.getInstance();
-        Connection connection = pool.getConnection();
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        
-        // Check if connection is null
-        if (connection == null) {
-            System.out.println("ERROR: Cannot get database connection!");
-            return false;
-        }
-        
-        String query = "SELECT email FROM \"user\" " +
-                      "WHERE email = ?";
+        EntityManager em = DBUtil.getEmFactory().createEntityManager();
+        String qString = "SELECT u FROM User u " +
+                         "WHERE u.email = :email";
+        TypedQuery<User> q = em.createQuery(qString, User.class);
+        q.setParameter("email", email);
         try {
-            ps = connection.prepareStatement(query);
-            ps.setString(1, email);
-            rs = ps.executeQuery();
-            return rs.next();
-        } catch (SQLException e) {
-            System.out.println(e);
+            User user = q.getSingleResult();
+            return true;
+        } catch (NoResultException e) {
             return false;
         } finally {
-            DBUtil.closeResultSet(rs);
-            DBUtil.closePreparedStatement(ps);
-            pool.freeConnection(connection);
+            em.close();
         }
     }
     
     public static User selectUser(String email) {
-        ConnectionPool pool = ConnectionPool.getInstance();
-        Connection connection = pool.getConnection();
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        
-        if (connection == null) {
-            System.out.println("ERROR: Cannot get database connection!");
-            return null;
-        }
-        
-        String query = "SELECT * FROM \"user\" " +
-                      "WHERE email = ?";
+        EntityManager em = DBUtil.getEmFactory().createEntityManager();
+        String qString = "SELECT u FROM User u " +
+                         "WHERE u.email = :email";
+        TypedQuery<User> q = em.createQuery(qString, User.class);
+        q.setParameter("email", email);
         try {
-            ps = connection.prepareStatement(query);
-            ps.setString(1, email);
-            rs = ps.executeQuery();
-            User user = null;
-            if (rs.next()) {
-                user = new User();
-                user.setFirstName(rs.getString("firstname"));
-                user.setLastName(rs.getString("lastname"));
-                user.setEmail(rs.getString("email"));
-            }
+            User user = q.getSingleResult();
             return user;
-        } catch (SQLException e) {
-            System.out.println(e);
+        } catch (NoResultException e) {
             return null;
         } finally {
-            DBUtil.closeResultSet(rs);
-            DBUtil.closePreparedStatement(ps);
-            pool.freeConnection(connection);
+            em.close();
+        }
+    }
+    
+    public static List<User> selectUsers() {
+        EntityManager em = DBUtil.getEmFactory().createEntityManager();
+        String qString = "SELECT u FROM User u ORDER BY u.userId";
+        TypedQuery<User> q = em.createQuery(qString, User.class);
+        List<User> users;
+        try {
+            users = q.getResultList();
+            return users;
+        } finally {
+            em.close();
         }
     }
 }
