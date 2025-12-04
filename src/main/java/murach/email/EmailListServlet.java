@@ -6,6 +6,7 @@ import jakarta.servlet.http.*;
 
 import murach.business.User;
 import murach.data.UserDB;
+import murach.util.MailUtilGmail;
 
 public class EmailListServlet extends HttpServlet {
     
@@ -52,6 +53,25 @@ public class EmailListServlet extends HttpServlet {
                 message = "";
                 url = "/thanks.jsp";
                 UserDB.insert(user);
+                
+                // Send confirmation email
+                String to = email;
+                String from = "quan610ll@gmail.com"; // TODO: Thay bằng email của bạn
+                String subject = "Welcome to our email list";
+                String body = "Dear " + firstName + ",\n\n" +
+                             "Thank you for joining our email list. " +
+                             "We'll use this email address to send you announcements " +
+                             "about new products and promotions.\n\n" +
+                             "Have a great day!\n\n" +
+                             "The Email List Team";
+                boolean isBodyHTML = false;
+                
+                try {
+                    MailUtilGmail.sendMail(to, from, subject, body, isBodyHTML);
+                } catch (Exception e) {
+                    System.out.println("Error sending email: " + e.getMessage());
+                    message = "Email sent failed. But you have been added to the list.";
+                }
             }
             request.setAttribute("user", user);
             request.setAttribute("message", message);
