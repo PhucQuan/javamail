@@ -1,0 +1,3 @@
+@echo off
+echo Starting application with Jetty...
+mvn clean jetty:run

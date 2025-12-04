@@ -6,7 +6,7 @@ import jakarta.servlet.http.*;
 
 import murach.business.User;
 import murach.data.UserDB;
-import murach.util.MailUtilGmail;
+import murach.util.MailUtil;
 
 public class EmailListServlet extends HttpServlet {
     
@@ -67,7 +67,7 @@ public class EmailListServlet extends HttpServlet {
                 boolean isBodyHTML = false;
                 
                 try {
-                    MailUtilGmail.sendMail(to, from, subject, body, isBodyHTML);
+                    MailUtil.sendMail(to, from, subject, body, isBodyHTML);
                 } catch (Exception e) {
                     System.out.println("Error sending email: " + e.getMessage());
                     message = "Email sent failed. But you have been added to the list.";

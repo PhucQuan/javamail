@@ -1,7 +1,13 @@
-murach\sql\SqlGatewayServlet.class
+murach\test\TestJPA.class
 murach\email\EmailListServlet.class
-murach\data\DBUtil.class
+murach\util\MailUtil.class
 murach\sql\SQLUtil.class
+murach\util\MailUtilSendGrid.class
+murach\sql\SqlGatewayServlet.class
+murach\util\MailUtilGmail$1.class
+murach\data\DBUtil.class
 murach\business\User.class
+murach\admin\UserServlet.class
+murach\util\MailUtilGmail.class
 murach\data\UserDB.class
 murach\data\ConnectionPool.class
