@@ -5,16 +5,27 @@ public class MailUtil {
     public static void sendMail(String to, String from,
             String subject, String body, boolean bodyIsHTML) throws Exception {
         
-        // Check if running on Render (has SENDGRID_API_KEY env variable)
-        String sendGridKey = System.getenv("SENDGRID_API_KEY");
+        // Auto-detect which email service to use based on environment variables
         
-        if (sendGridKey != null && !sendGridKey.isEmpty()) {
-            // Use SendGrid for Render deployment
-            System.out.println("Using SendGrid API for email...");
+        if (System.getenv("SENDGRID_API_KEY") != null) {
+            System.out.println("Using SendGrid API...");
             MailUtilSendGrid.sendMail(to, from, subject, body, bodyIsHTML);
-        } else {
+        } 
+        else if (System.getenv("MAILGUN_API_KEY") != null) {
+            System.out.println("Using Mailgun API...");
+            MailUtilMailgun.sendMail(to, from, subject, body, bodyIsHTML);
+        }
+        else if (System.getenv("RESEND_API_KEY") != null) {
+            System.out.println("Using Resend API...");
+            MailUtilResend.sendMail(to, from, subject, body, bodyIsHTML);
+        }
+        else if (System.getenv("BREVO_API_KEY") != null) {
+            System.out.println("Using Brevo API...");
+            MailUtilBrevo.sendMail(to, from, subject, body, bodyIsHTML);
+        }
+        else {
             // Use Gmail SMTP for local development
-            System.out.println("Using Gmail SMTP for email...");
+            System.out.println("Using Gmail SMTP...");
             MailUtilGmail.sendMail(to, from, subject, body, bodyIsHTML);
         }
     }

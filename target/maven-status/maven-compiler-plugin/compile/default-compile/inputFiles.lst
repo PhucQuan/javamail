@@ -1,7 +1,10 @@
+C:\Users\DELL\codecuaquan\lap trinh web\SQLGatewayApp\src\main\java\murach\util\MailUtilMailgun.java
+C:\Users\DELL\codecuaquan\lap trinh web\SQLGatewayApp\src\main\java\murach\email\EmailListServlet.java
+C:\Users\DELL\codecuaquan\lap trinh web\SQLGatewayApp\src\main\java\murach\sql\SQLUtil.java
+C:\Users\DELL\codecuaquan\lap trinh web\SQLGatewayApp\src\main\java\murach\util\MailUtilBrevo.java
 C:\Users\DELL\codecuaquan\lap trinh web\SQLGatewayApp\src\main\java\murach\util\MailUtilSendGrid.java
 C:\Users\DELL\codecuaquan\lap trinh web\SQLGatewayApp\src\main\java\murach\business\User.java
 C:\Users\DELL\codecuaquan\lap trinh web\SQLGatewayApp\src\main\java\murach\sql\SqlGatewayServlet.java
-C:\Users\DELL\codecuaquan\lap trinh web\SQLGatewayApp\src\main\java\murach\email\EmailListServlet.java
 C:\Users\DELL\codecuaquan\lap trinh web\SQLGatewayApp\src\main\java\murach\data\DBUtil.java
 C:\Users\DELL\codecuaquan\lap trinh web\SQLGatewayApp\src\main\java\murach\data\UserDB.java
 C:\Users\DELL\codecuaquan\lap trinh web\SQLGatewayApp\src\main\java\murach\test\TestJPA.java
@@ -9,4 +12,4 @@ C:\Users\DELL\codecuaquan\lap trinh web\SQLGatewayApp\src\main\java\murach\admin
 C:\Users\DELL\codecuaquan\lap trinh web\SQLGatewayApp\src\main\java\murach\data\ConnectionPool.java
 C:\Users\DELL\codecuaquan\lap trinh web\SQLGatewayApp\src\main\java\murach\util\MailUtil.java
 C:\Users\DELL\codecuaquan\lap trinh web\SQLGatewayApp\src\main\java\murach\util\MailUtilGmail.java
-C:\Users\DELL\codecuaquan\lap trinh web\SQLGatewayApp\src\main\java\murach\sql\SQLUtil.java
+C:\Users\DELL\codecuaquan\lap trinh web\SQLGatewayApp\src\main\java\murach\util\MailUtilResend.java

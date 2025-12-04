@@ -9,5 +9,8 @@ murach\data\DBUtil.class
 murach\business\User.class
 murach\admin\UserServlet.class
 murach\util\MailUtilGmail.class
+murach\util\MailUtilResend.class
+murach\util\MailUtilMailgun.class
 murach\data\UserDB.class
 murach\data\ConnectionPool.class
+murach\util\MailUtilBrevo.class
