@@ -6,7 +6,7 @@ import jakarta.servlet.http.*;
 
 import murach.business.User;
 import murach.data.UserDB;
-import murach.util.MailUtilResend;
+import murach.util.MailUtilBrevo;
 
 public class EmailListServlet extends HttpServlet {
     
@@ -68,7 +68,7 @@ public class EmailListServlet extends HttpServlet {
                 boolean isBodyHTML = false;
                 
                 try {
-                    MailUtilResend.sendMail(to, from, subject, body, isBodyHTML);
+                    MailUtilBrevo.sendMail(to, from, subject, body, isBodyHTML);
                     System.out.println("Email sent successfully to: " + to);
                 } catch (Exception e) {
                     System.err.println("Error sending email: " + e.getMessage());
