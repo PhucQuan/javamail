@@ -56,7 +56,7 @@ public class EmailListServlet extends HttpServlet {
                 
                 // Send confirmation email
                 String to = email;
-                String from = ""; // Sẽ sử dụng DEFAULT_FROM trong MailUtilResend
+                String from = System.getenv("BREVO_EMAIL"); // Use Brevo sender email
                 
                 String subject = "Welcome to our email list";
                 String body = "Dear " + firstName + ",\n\n" +
@@ -67,13 +67,25 @@ public class EmailListServlet extends HttpServlet {
                              "The Email List Team";
                 boolean isBodyHTML = false;
                 
-                try {
-                    MailUtilBrevo.sendMail(to, from, subject, body, isBodyHTML);
-                    System.out.println("Email sent successfully to: " + to);
-                } catch (Exception e) {
-                    System.err.println("Error sending email: " + e.getMessage());
-                    e.printStackTrace();
-                    message = "Email sent failed. But you have been added to the list.";
+                // Validate email addresses before sending
+                if (to == null || to.trim().isEmpty()) {
+                    System.err.println("ERROR: Recipient email (to) is null or empty!");
+                    message = "Email sent failed: Invalid recipient email. But you have been added to the list.";
+                } else if (from == null || from.trim().isEmpty()) {
+                    System.err.println("ERROR: Sender email (from) is null or empty! Please set BREVO_EMAIL environment variable.");
+                    message = "Email sent failed: Server configuration error. But you have been added to the list.";
+                } else {
+                    try {
+                        System.out.println("Attempting to send email...");
+                        System.out.println("  From: " + from);
+                        System.out.println("  To: " + to);
+                        MailUtilBrevo.sendMail(to, from, subject, body, isBodyHTML);
+                        System.out.println("Email sent successfully to: " + to);
+                    } catch (Exception e) {
+                        System.err.println("Error sending email: " + e.getMessage());
+                        e.printStackTrace();
+                        message = "Email sent failed. But you have been added to the list.";
+                    }
                 }
             }
             request.setAttribute("user", user);
