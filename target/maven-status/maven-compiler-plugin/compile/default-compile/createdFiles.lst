@@ -2,6 +2,7 @@ murach\test\TestJPA.class
 murach\email\EmailListServlet.class
 murach\util\MailUtil.class
 murach\sql\SQLUtil.class
+murach\util\MailUtilBrevo$1.class
 murach\util\MailUtilSendGrid.class
 murach\sql\SqlGatewayServlet.class
 murach\util\MailUtilGmail$1.class
