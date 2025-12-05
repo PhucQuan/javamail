@@ -6,7 +6,7 @@ import jakarta.servlet.http.*;
 
 import murach.business.User;
 import murach.data.UserDB;
-import murach.util.MailUtil;
+import murach.util.MailUtilResend as MailUtil;
 
 public class EmailListServlet extends HttpServlet {
     
@@ -56,7 +56,10 @@ public class EmailListServlet extends HttpServlet {
                 
                 // Send confirmation email
                 String to = email;
-                String from = "quan610ll@gmail.com"; // TODO: Thay bằng email của bạn
+                
+                // Use the default from address defined in MailUtilResend
+                String from = ""; // Will use default from MailUtilResend
+                
                 String subject = "Welcome to our email list";
                 String body = "Dear " + firstName + ",\n\n" +
                              "Thank you for joining our email list. " +
@@ -67,7 +70,14 @@ public class EmailListServlet extends HttpServlet {
                 boolean isBodyHTML = false;
                 
                 try {
-                    MailUtil.sendMail(to, from, subject, body, isBodyHTML);
+                    try {
+                        MailUtil.sendMail(to, from, subject, body, isBodyHTML);
+                        System.out.println("Email sent successfully to: " + to);
+                    } catch (Exception e) {
+                        System.err.println("Error sending email: " + e.getMessage());
+                        e.printStackTrace();
+                        throw new ServletException("Failed to send email: " + e.getMessage(), e);
+                    }
                 } catch (Exception e) {
                     System.out.println("Error sending email: " + e.getMessage());
                     message = "Email sent failed. But you have been added to the list.";
