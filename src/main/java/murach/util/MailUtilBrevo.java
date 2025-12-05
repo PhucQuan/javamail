@@ -30,21 +30,21 @@ public class MailUtilBrevo {
                 return new PasswordAuthentication(SMTP_USERNAME, SMTP_PASSWORD);
             }
         });
-        String jsonBody = String.format(
-            "{\"sender\":{\"email\":\"%s\"},\"to\":[{\"email\":\"%s\"}],\"subject\":\"%s\",\"textContent\":\"%s\"}",
-            from, to, subject, body.replace("\n", "\\n")
-        );
         
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .header("api-key", BREVO_API_KEY)
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
-                .build();
+        // Create message
+        Message message = new MimeMessage(session);
+        message.setFrom(new InternetAddress(from));
+        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
+        message.setSubject(subject);
         
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println("Brevo Status: " + response.statusCode());
-        System.out.println("Brevo Response: " + response.body());
+        if (bodyIsHTML) {
+            message.setContent(body, "text/html; charset=utf-8");
+        } else {
+            message.setText(body);
+        }
+        
+        // Send message
+        Transport.send(message);
+        System.out.println("Email sent successfully via Brevo SMTP");
     }
 }
