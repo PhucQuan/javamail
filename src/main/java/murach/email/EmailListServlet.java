@@ -6,7 +6,7 @@ import jakarta.servlet.http.*;
 
 import murach.business.User;
 import murach.data.UserDB;
-import murach.util.MailUtilResend as MailUtil;
+import murach.util.MailUtilResend;
 
 public class EmailListServlet extends HttpServlet {
     
@@ -56,9 +56,8 @@ public class EmailListServlet extends HttpServlet {
                 
                 // Send confirmation email
                 String to = email;
-                
                 // Use the default from address defined in MailUtilResend
-                String from = ""; // Will use default from MailUtilResend
+                String from = MailUtilResend.getFromAddress(); // Use the default from address defined in MailUtilResend
                 
                 String subject = "Welcome to our email list";
                 String body = "Dear " + firstName + ",\n\n" +
@@ -71,7 +70,14 @@ public class EmailListServlet extends HttpServlet {
                 
                 try {
                     try {
-                        MailUtil.sendMail(to, from, subject, body, isBodyHTML);
+                        try {
+                        MailUtilResend.sendMail(to, from, subject, body, isBodyHTML);
+                        System.out.println("Email sent successfully to: " + to);
+                    } catch (Exception e) {
+                        System.err.println("Error sending email: " + e.getMessage());
+                        e.printStackTrace();
+                        throw new ServletException("Failed to send email: " + e.getMessage(), e);
+                    }
                         System.out.println("Email sent successfully to: " + to);
                     } catch (Exception e) {
                         System.err.println("Error sending email: " + e.getMessage());
