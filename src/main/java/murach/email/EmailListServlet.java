@@ -56,8 +56,7 @@ public class EmailListServlet extends HttpServlet {
                 
                 // Send confirmation email
                 String to = email;
-                // Use the default from address defined in MailUtilResend
-                String from = MailUtilResend.getFromAddress(); // Use the default from address defined in MailUtilResend
+                String from = ""; // Sẽ sử dụng DEFAULT_FROM trong MailUtilResend
                 
                 String subject = "Welcome to our email list";
                 String body = "Dear " + firstName + ",\n\n" +
@@ -69,23 +68,11 @@ public class EmailListServlet extends HttpServlet {
                 boolean isBodyHTML = false;
                 
                 try {
-                    try {
-                        try {
-                        MailUtilResend.sendMail(to, from, subject, body, isBodyHTML);
-                        System.out.println("Email sent successfully to: " + to);
-                    } catch (Exception e) {
-                        System.err.println("Error sending email: " + e.getMessage());
-                        e.printStackTrace();
-                        throw new ServletException("Failed to send email: " + e.getMessage(), e);
-                    }
-                        System.out.println("Email sent successfully to: " + to);
-                    } catch (Exception e) {
-                        System.err.println("Error sending email: " + e.getMessage());
-                        e.printStackTrace();
-                        throw new ServletException("Failed to send email: " + e.getMessage(), e);
-                    }
+                    MailUtilResend.sendMail(to, from, subject, body, isBodyHTML);
+                    System.out.println("Email sent successfully to: " + to);
                 } catch (Exception e) {
-                    System.out.println("Error sending email: " + e.getMessage());
+                    System.err.println("Error sending email: " + e.getMessage());
+                    e.printStackTrace();
                     message = "Email sent failed. But you have been added to the list.";
                 }
             }
